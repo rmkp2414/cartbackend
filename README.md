@@ -1,2 +1,1 @@
-# shoppingAppClient
-client repo
+# shopingApp
