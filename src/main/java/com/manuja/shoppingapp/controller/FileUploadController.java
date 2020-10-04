@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -125,7 +126,7 @@ public class FileUploadController {
 			model.addAttribute("image2", "");
 			model.addAttribute("image3", "");
 			model.addAttribute("image4", "");
-			model.addAttribute("path1", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
+			model.addAttribute("path1", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
 			model.addAttribute("path2", "");
 			model.addAttribute("path3", "");
 			model.addAttribute("path4", "");
@@ -135,8 +136,8 @@ public class FileUploadController {
 			model.addAttribute("image2",  fileNames.get(1).getPicture());
 			model.addAttribute("image3", "");
 			model.addAttribute("image4", "");
-			model.addAttribute("path1", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
-			model.addAttribute("path2", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
+			model.addAttribute("path1", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
+			model.addAttribute("path2", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
 			model.addAttribute("path3", "");
 			model.addAttribute("path4", "");
 			break;
@@ -145,9 +146,9 @@ public class FileUploadController {
 			model.addAttribute("image2",  fileNames.get(1).getPicture());
 			model.addAttribute("image3",  fileNames.get(2).getPicture());
 			model.addAttribute("image4", "");
-			model.addAttribute("path1", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
-			model.addAttribute("path2", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
-			model.addAttribute("path3", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(2).getId());
+			model.addAttribute("path1", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
+			model.addAttribute("path2", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
+			model.addAttribute("path3", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(2).getId());
 			model.addAttribute("path4", "");
 			break;
 		case 4:
@@ -155,10 +156,10 @@ public class FileUploadController {
 			model.addAttribute("image2",  fileNames.get(1).getPicture());
 			model.addAttribute("image3",  fileNames.get(2).getPicture());
 			model.addAttribute("image4",  fileNames.get(3).getPicture());
-			model.addAttribute("path1", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
-			model.addAttribute("path2", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
-			model.addAttribute("path3", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(2).getId());
-			model.addAttribute("path4", "/adminPortal/imageDelete/"+productId+"/"+fileNames.get(3).getId());
+			model.addAttribute("path1", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(0).getId());
+			model.addAttribute("path2", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(1).getId());
+			model.addAttribute("path3", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(2).getId());
+			model.addAttribute("path4", "/shoppingapp/adminPortal/imageDelete/"+productId+"/"+fileNames.get(3).getId());
 			break;
 
 		default:
@@ -166,6 +167,10 @@ public class FileUploadController {
 			model.addAttribute("image2", "");
 			model.addAttribute("image3", "");
 			model.addAttribute("image4", "");
+			model.addAttribute("path1", "");
+			model.addAttribute("path2", "");
+			model.addAttribute("path3", "");
+			model.addAttribute("path4", "");
 			break;
 		}
     	return "upload";
@@ -179,40 +184,49 @@ public class FileUploadController {
 			@RequestParam("file4") MultipartFile file4,
 			@PathVariable Integer productId,
 			RedirectAttributes redirectAttributes) {
+		
 		MultipartFile arra [] = {file1,file2,file3,file4}; 
 		List<ProductItemPIcture> itemList = productItemPictureRepository.getProductItemPIctureList(Integer.valueOf(productId));
+		
 		for(int i=0;i<4;i++) {
 			if(!arra[i].isEmpty()) {
-				String fileName = storageService.saveFile(arra[i]);
-				redirectAttributes.addFlashAttribute("message",
-						"You successfully uploaded " + fileName + "!");
 				
-				Product product = new Product();
-				product.setId(productId);
-				ProductItemPIcture pIcture = new ProductItemPIcture();
-				pIcture.setProductItemId(product);
-				pIcture.setPicture(fileName);
-				if(itemList.size() > i) {
-					pIcture.setId(itemList.get(i).getId());
-					deleteFileByName(itemList.get(i).getPicture());
+				String fileName = storageService.saveFile(arra[i]);
+				if(!fileName.startsWith("fille upload not success.")) {
+					
+					redirectAttributes.addFlashAttribute("message",
+							"You successfully uploaded " + fileName + "!");
+					
+					Product product = new Product();
+					product.setId(productId);
+					ProductItemPIcture pIcture = new ProductItemPIcture();
+					pIcture.setProductItemId(product);
+					pIcture.setPicture(fileName);
+					if(itemList.size() > i) {
+						
+						pIcture.setId(itemList.get(i).getId());
+						deleteFileByName(itemList.get(i).getPicture());
+					}
+					productItemPictureRepository.save(pIcture);
+				}else {
+					return "redirect:/adminPortal/uploadImages/"+productId;
 				}
-				productItemPictureRepository.save(pIcture);
 			}
 		}
 		return "redirect:/adminPortal/products";
 	}
 	
 	
-	@RequestMapping(value = "/adminPortal/image/get/{filename}", method = RequestMethod.GET,
-            produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> getImage(@PathVariable String filename) throws IOException {
-        ClassPathResource imgFile = new ClassPathResource("C:/wamp/www/shoplingAppImages/"+filename);
-        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(bytes);
-    }
+//	@RequestMapping(value = "/adminPortal/image/get/{filename}", method = RequestMethod.GET,
+//            produces = MediaType.IMAGE_JPEG_VALUE)
+//    public ResponseEntity<byte[]> getImage(@PathVariable String filename) throws IOException {
+//        ClassPathResource imgFile = new ClassPathResource("C:/wamp/www/shoplingAppImages/"+filename);
+//        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+//        return ResponseEntity
+//                .ok()
+//                .contentType(MediaType.IMAGE_JPEG)
+//                .body(bytes);
+//    }
     
     @RequestMapping(value = "/image/get/list/{product_id}", method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)

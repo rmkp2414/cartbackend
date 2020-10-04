@@ -101,6 +101,7 @@
 		    <c:when test="${image1!=''}">
 		        <div><img width="300" src="http://localhost/shoplingAppImages/${image1}" alt=""> </div>
 		        <div><a href="${path1}">DELETE</a></div>
+		        <input  style="display: none;" type="file" name="file1"  id="file1"/>
 		        <br />
 		    </c:when>    
 		    <c:otherwise>
@@ -114,6 +115,7 @@
 		    <c:when test="${image2!=''}">
 		        <div><img width="300" src="http://localhost/shoplingAppImages/${image2}" alt=""> </div>
 		        <div><a href="${path2}">DELETE</a></div>
+		        <input  style="display: none;" type="file" name="file2"  id="file2"/>
 		        <br />
 		    </c:when>    
 		    <c:otherwise>
@@ -127,6 +129,7 @@
 		    <c:when test="${image3!=''}">
 		        <div><img width="300" src="http://localhost/shoplingAppImages/${image3}" alt=""> </div>
 		        <div><a href="${path3}">DELETE</a></div>
+		        <input  style="display: none;" type="file" name="file3"  id="file3"/>
 		        <br />
 		    </c:when>    
 		    <c:otherwise>
@@ -140,6 +143,7 @@
 		    <c:when test="${image4!=''}">
 		        <div><img width="300" src="http://localhost/shoplingAppImages/${image4}" alt=""> </div>
 		        <div><a href="${path4}">DELETE</a></div>
+		        <input  style="display: none;" type="file" name="file4"  id="file4"/>
 		        <br />
 		    </c:when>    
 		    <c:otherwise>
