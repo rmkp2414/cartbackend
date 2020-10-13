@@ -195,8 +195,8 @@
 							</div>
 							<div class="product_text">
 								<p>Description : ${productDetails.description }</p>
-								<p>Description : ${userId}</p>
-								<p>Description : ${productDetails.id}</p>
+								<!--<p>Description : ${userId}</p>
+								<p>Description : ${productDetails.id}</p> -->
 							</div>
 							<div class="product_buttons">
 								<div class="text-right d-flex flex-row align-items-start justify-content-start">

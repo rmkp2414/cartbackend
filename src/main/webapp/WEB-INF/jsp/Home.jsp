@@ -164,7 +164,7 @@
 									<div>
 										<div>
 											<div class="product_name"><a href="shop/product/${myProduct.id}">${myProduct.name}</a></div>
-											<div class="product_category">In <a href="category.html">${myProduct.category}</a></div>
+											<div class="product_category">In <a >${myProduct.category}</a></div>
 										</div>
 									</div>
 									<div class="ml-auto text-right">
