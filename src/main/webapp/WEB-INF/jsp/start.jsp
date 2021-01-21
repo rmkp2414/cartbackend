@@ -87,7 +87,7 @@
 			<div class="container" >
 				<div class="row">
 					<a></a><div class="col-md-12" style="height: 100px; background-color: #2fce98; margin-top: 3em; cursor: pointer;">
-						<p style="color : white; font-size: 5em;" onclick="window.location.href='/shoppingapp/login'">Customer Area</p>
+						<p style="color : white; font-size: 5em;" onclick="window.location.href='/login'">Customer Area</p>
 					</div></a>
 					
 					<div class="col-md-12" style="height: 100px; background-color: #2fce98; margin-top: 3em; cursor: pointer;">
