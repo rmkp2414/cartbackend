@@ -1,6 +1,9 @@
 package com.manuja.shoppingapp.api;
 
+import java.lang.reflect.Array;
+import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -97,17 +100,18 @@ public class ServiceApi {
 	@Autowired
 	ProductService productService;
 	
-	@RequestMapping(value = "/products/{category}", method = RequestMethod.GET)	
-	public ResponseEntity<List<ProductDetailsDto>> getProducts(@PathVariable String category) throws Exception 
+	@RequestMapping(value = "/products", method = RequestMethod.GET)	
+	public ResponseEntity<List<ProductDetailsDto>> getProducts() throws Exception 
 	{
-		if(category != null)
-		{
-			List<ProductDetailsDto> result = productService.getAllProducts().stream()
-				     .filter(item -> item.getCategory().equals(category))
-				     .collect(Collectors.toList());			
-			return ResponseEntity.ok(result);			
-		}	
+//		if(category != null)
+//		{
+//			List<ProductDetailsDto> result = productService.getAllProducts().stream()
+//				     .filter(item -> item.getCategory().equals(category))
+//				     .collect(Collectors.toList());			
+//			return ResponseEntity.ok(result);			
+//		}	
 		
+		List<ProductDetailsDto> prod = productService.getAllProducts();
 		
 		
 		return ResponseEntity.ok(productService.getAllProducts());
@@ -138,6 +142,17 @@ public class ServiceApi {
 	
 	//SaveUser cart when purchase finishes
 	
+	
+	@GetMapping(value = "/productByCategory/{category}")
+    public List<ProductDetailsDto> getProductsCat(String category)throws URISyntaxException{
+        return  productService.getProductsByCategory(category);
+    }
+
+//    @GetMapping(value = "/productByCategoryy{category}")
+//    public List<Product> getProductsCatt(String category)throws URISyntaxException{
+//        return  productRepository.findAllByCategoryType(category);
+//    }
+
 	
 
 	

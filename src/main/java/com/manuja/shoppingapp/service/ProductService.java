@@ -20,4 +20,6 @@ public interface ProductService {
 	public ResponseDto updateProduct(ProductDetailsDto productDetailsDto);
 	public ResponseDto deleteProduct(Integer id);
 	public ProductDetailsDto convertProductToDto(Product myProduct);
+	
+	public List<ProductDetailsDto> getProductsByCategory(String category);
 }

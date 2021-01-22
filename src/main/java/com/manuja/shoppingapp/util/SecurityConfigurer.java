@@ -1,5 +1,6 @@
 package com.manuja.shoppingapp.util;
 
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -98,6 +99,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter   {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 	    return NoOpPasswordEncoder.getInstance();
+	    
 	}
 //
 	
