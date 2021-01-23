@@ -50,11 +50,38 @@ public class ServiceApi {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	
+	
+	
+	
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public String Hello() {
+		return "API WORKING FINE";
+	}
+	
+//	@RequestMapping(value = "/user", method = RequestMethod.GET)
+//	public ResponseEntity<User> getUser() {
+//		
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		String currentPrincipalName = authentication.getName();
+//				
+//		
+//		return "API WORKING FINE";
+//	}
+	
+	@RequestMapping(value = "/saveshipping", method = RequestMethod.POST)
+	public String svaeShipping() {
+		
+		
+		
+		
+		//save user shipping cart to order table 
+		
+		
+		
 		return "API WORKING FINE";
 	}
 	
