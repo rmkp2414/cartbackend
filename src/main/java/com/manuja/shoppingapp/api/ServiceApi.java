@@ -158,8 +158,9 @@ public class ServiceApi {
 	public ResponseEntity<CartDto> addProducttoCart(@RequestParam(value = "userid") int userid,@RequestParam(value = "productid") int productid ){
 				
 		ResponseDto responseDto = cartService.addProductToCart(userid,productid);
+//		ResponseDto responseDto = new ResponseDto();
 		CartDto allUserItems = new CartDto();
-		if(responseDto != null)
+		if(responseDto.getStatus().equals(true))
 		{
 			allUserItems = cartService.getUserCart(userid);			
 		}
