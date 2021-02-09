@@ -22,7 +22,7 @@
     <dependencies>      
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>            
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -70,34 +70,28 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             </dependency>
-            
-
-<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt</artifactId>
-    <version>0.9.1</version>
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt</artifactId>
+    		<version>0.9.1</version>
+		</dependency>
+		<dependency>
+    <groupId>com.heroku</groupId>
+    <artifactId>webapp-runner</artifactId>
+    <version>9.0.41.0</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-<dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-    <version>2.3.0</version>
-</dependency>
-
-		
- 
+		 
     </dependencies>
     <build>
+    <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <artifactId>spring-boot-maven-plugin</artifactId>                
             </plugin>
         </plugins>
     </build>

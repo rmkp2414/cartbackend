@@ -10,6 +10,8 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.manuja.shoppingapp.dto.LoginDto;
@@ -25,6 +27,8 @@ import com.manuja.shoppingapp.service.LoginService;
 import com.manuja.shoppingapp.service.ProductService;
 import com.manuja.shoppingapp.util.StatusMessages;
 import com.manuja.shoppingapp.util.UserType;
+
+import jodd.crypt.BCrypt;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -44,8 +48,8 @@ public class LoginServiceImpl implements LoginService {
 	public UserDto login(LoginDto loginDto, String userLevel) {
 		
 		User user = userRepository.findOneByUsername(loginDto.getUsername());
-		if(user != null && user.getPassword().equals(hashPass(loginDto.getPassword()))) {
-			
+		//if(user != null && user.getPassword().equals(hashPass(loginDto.getPassword()))) {
+		if(user != null && hashPass(loginDto.getPassword(),user.getPassword())=="VALID") {
 			List<Product> products = productRepository.findAll();
 			List<ProductDetailsDto> productDetailsDtos = new ArrayList<ProductDetailsDto>();
 			for (Product product : products) {
@@ -100,7 +104,7 @@ public class LoginServiceImpl implements LoginService {
 		}else {
 			User newUser = new User();
 			newUser.setUsername(signupDto.getUsername());
-			newUser.setPassword(hashPass(signupDto.getPassword()));
+			newUser.setPassword(hashPass(signupDto.getPassword(),""));
 			newUser.setUserType(userType.getUserType());
 			newUser.setAddressLine1(signupDto.getAddressLine1());
 			newUser.setAddressLine2(signupDto.getAddressLine1());
@@ -124,23 +128,48 @@ public class LoginServiceImpl implements LoginService {
 		}
 	}
 
-	private String hashPass(String password) {
-		MessageDigest messageDigest;
-		try {
-			messageDigest = MessageDigest.getInstance("MD5");
-			messageDigest.update(password.getBytes());
-		    byte[] digiest = messageDigest.digest();
-		    String hashedOutput = DatatypeConverter.printHexBinary(digiest);
-		    return hashedOutput;
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "123123";
-		}
+//	private String hashPass(String password) {
+//		MessageDigest messageDigest;
+//		try {
+//			messageDigest = MessageDigest.getInstance("MD5");
+//			messageDigest.update(password.getBytes());
+//		    byte[] digiest = messageDigest.digest();
+//		    String hashedOutput = DatatypeConverter.printHexBinary(digiest);
+//		    return hashedOutput;
+//		} catch (NoSuchAlgorithmException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return "123123";
+//		}
+//	}
+	
+//	private String hashPass(String password) {		
+//		return password;
+//	}
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	private String hashPass(String password,String hash) {		
+		if(!hash.equals(""))
+		{					
+			boolean isAuthenticated =passwordEncoder.matches(password, hash);
+			if(isAuthenticated)
+			{
+				return "VALID";
+			}
+			else {
+				return "INVALID";
+			}
+		}		
+		else {		
+			try {
+				return passwordEncoder.encode(password);				
+			} catch (Exception e) {				
+				e.printStackTrace();
+				return "0000000";
+			}
+		}		
 	}
 	
-	
-	
-	
-
 }

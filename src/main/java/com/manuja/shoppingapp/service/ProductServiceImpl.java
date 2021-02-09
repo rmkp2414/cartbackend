@@ -283,7 +283,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDetailsDto> getProductsByCategory(String category){
 
-     	List<Product>products = productRepository.findAllByCategoryType(category);
+		List<Product>products = productRepository.findAllByCategoryType(category);     	
 		List<ProductDetailsDto> productDetailsDtos = new ArrayList<ProductDetailsDto>();
 		for (Product product : products) {
 			ProductDetailsDto productDetailsDto = convertProductToDto(product);
