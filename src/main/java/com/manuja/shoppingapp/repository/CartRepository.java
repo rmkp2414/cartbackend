@@ -13,5 +13,6 @@ public interface CartRepository extends JpaRepository<Cart,Integer> {
 	
 	List<Cart> findByUser(User user);
 	
-	List<Cart> findByUserAndStatusAndCheckout(User user, Boolean status, Boolean Checkout);
+	List<Cart> findByUserAndStatusAndCheckout(User user, Boolean status, Boolean Checkout);	
+	
 }

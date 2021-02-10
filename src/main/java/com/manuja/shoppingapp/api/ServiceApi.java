@@ -158,7 +158,7 @@ public class ServiceApi {
 	public ResponseEntity<CartDto> addProducttoCart(@RequestParam(value = "userid") int userid,@RequestParam(value = "productid") int productid ){
 				
 		ResponseDto responseDto = cartService.addProductToCart(userid,productid);
-//		ResponseDto responseDto = new ResponseDto();
+		//ResponseDto responseDto = new ResponseDto();
 		CartDto allUserItems = new CartDto();
 		if(responseDto.getStatus().equals(true))
 		{
@@ -168,9 +168,27 @@ public class ServiceApi {
 	}
 		
 	@RequestMapping(value = "/removecartitem", method = RequestMethod.GET)
-	public void removeItemFromCart(@RequestParam(value = "userid") int userid,@RequestParam(value = "itemid") int itemid){		
+	public ResponseEntity<ResponseDto> removeItemFromCart(@RequestParam(value = "userid") int userid,@RequestParam(value = "itemid") int itemid){		
 		CartItem cartItem = cartItemService.findbyID(itemid);
-        cartItemService.Delete(cartItem);		
+		ResponseDto rd = new ResponseDto();
+		if(cartItem != null)
+		{
+			try {
+				cartItemService.Delete(cartItem);
+			 	rd.setStatus(true);
+				rd.setStatusMessage("ITEM REMOVED FROM CART");
+				return ResponseEntity.ok(rd);				
+			}catch(IllegalArgumentException e)
+			{
+				rd.setStatus(false);
+				 rd.setStatusMessage("ERROR OCCURED...");
+				 return ResponseEntity.ok(rd);
+			}	 
+		}
+		 rd.setStatus(false);
+		 rd.setStatusMessage("ERROR OCCURED...");
+		 return ResponseEntity.ok(rd);
+		//return (ResponseEntity<ResponseDto>) ResponseEntity.notFound();
 	}
-	
+		
 }
